@@ -70,6 +70,24 @@ const sessionOptions = {
   },
 };
 
+//new changes
+app.use(session(sessionOptions));
+app.use(passport.initialize());
+app.use(passport.session());
+app.use(flash()); //flash
+
+passport.use(new LocalStrategy(User.authenticate()));
+
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
+
+app.use((req, res, next) => {
+  res.locals.success = req.flash("success");
+  res.locals.error = req.flash("error");
+  res.locals.currUser = req.user;
+  next();
+});
+
 // Redirect root to /listings
 app.get("/", (req, res) => {
   res.redirect("/listings");
@@ -84,23 +102,8 @@ app.use("/", userRouter);
 // });
 
 //Session
-app.use(session(sessionOptions));
-app.use(flash()); //flash
 
 //Passport
-app.use(passport.initialize());
-app.use(passport.session());
-passport.use(new LocalStrategy(User.authenticate()));
-
-passport.serializeUser(User.serializeUser());
-passport.deserializeUser(User.deserializeUser());
-
-app.use((req, res, next) => {
-  res.locals.success = req.flash("success");
-  res.locals.error = req.flash("error");
-  res.locals.currUser = req.user;
-  next();
-});
 
 //DemoUser
 // app.get("/demouser", async (req, res) => {
