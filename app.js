@@ -1,5 +1,9 @@
 if (process.env.NODE_ENV != "production") {
   require("dotenv").config();
+  console.log("--- DEBUGGING ENVIRONMENT VARIABLES ---");
+  console.log("ATLASDB_URL:", process.env.ATLASDB_URL);
+  console.log("SECRET:", process.env.SECRET);
+  console.log("------------------------------------");
 }
 
 const express = require("express");
