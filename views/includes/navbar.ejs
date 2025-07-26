@@ -39,11 +39,18 @@
       </div>
 
       <div class="navbar-nav ms-auto">
-        <form class="d-flex" role="search">
+        <form
+          class="d-flex"
+          role="search"
+          action="/listings/search"
+          method="GET"
+        >
           <input
             class="form-control me-2 search-input"
             type="search"
-            placeholder="Search destinations"
+            placeholder="Search by title"
+            aria-label="Search"
+            name="q"
           />
           <button class="btn search-btn" type="submit">
             <i class="fa-solid fa-magnifying-glass"></i>Search

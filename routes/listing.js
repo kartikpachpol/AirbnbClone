@@ -22,6 +22,31 @@ router
 //New Route
 router.get("/new", isLoggedIn, listingController.renderNewForm);
 
+router.get("/search", async (req, res) => {
+  const { q } = req.query; // Get the search query from the URL
+
+  // If the query is empty, just redirect to the all listings page
+  if (!q) {
+    return res.redirect("/listings");
+  }
+
+  // Perform a case-insensitive search on the 'title' field
+  const allListings = await Listing.find({
+    title: { $regex: q, $options: "i" },
+  });
+
+  if (allListings.length === 0) {
+    req.flash(
+      "error",
+      "No listings found matching your search. Please try again."
+    );
+    return res.redirect("/listings");
+  }
+
+  // Render the same index page, but with the filtered listings
+  res.render("listings/index.ejs", { allListings });
+});
+
 router
   .route("/:id")
   .get(wrapAsync(listingController.showListing)) //Show Route For the Listing
